@@ -1,0 +1,33 @@
+#pragma once
+#include "../NODE_LINE_DATA.h"
+#include "INTERFACE.h"
+class PROCESS_NODE_CONNECTOR_OUT;
+class PROCESS_NODE_CONNECTOR_IN;
+class PROCESS_NODE_LINER;
+namespace PROCESS_NODE_COMMAND {
+	//ノード同士をつなぐコマンド
+	class CONNECT :public BASE {
+	public:
+		CONNECT(
+			PROCESS_NODE_CONNECTOR_OUT* connecterOut,
+			PROCESS_NODE_CONNECTOR_IN* connecterIn,
+			PROCESS_NODE_LINER* processNodeLiner);
+		~CONNECT();
+		void execute()override;
+		void undo()override;
+	private:
+		//
+		PROCESS_NODE_CONNECTOR_OUT* ConnecterOut = nullptr;
+		NODE_LINE_DATA NodeLineData;
+		PROCESS_NODE_CONNECTOR_IN* ConnecterIn = nullptr;
+
+		//Outにつながっていた前のIn
+		PROCESS_NODE_CONNECTOR_IN* OldConnecterIn = nullptr;
+		//Inにつながっていた前のOut
+		PROCESS_NODE_CONNECTOR_OUT* OldConnecterOut = nullptr;
+		NODE_LINE_DATA OldNodeLineData;
+
+		PROCESS_NODE_LINER* ProcessNodeLiner = nullptr;
+	};
+
+}
